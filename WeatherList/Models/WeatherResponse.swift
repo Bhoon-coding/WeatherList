@@ -9,15 +9,25 @@ import Foundation
 
 struct WeatherResponse: Decodable {
     
-    let list: [WeatherInfo]
+    let statusCode: String?
+    let count: Int?
+    let list: [WeatherInfo]?
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case statusCode = "cod"
+        case count = "cnt"
+        case list
+        
+    }
     
 }
 
 struct WeatherInfo: Decodable {
     
-    let temp: Temp
-    let weather: [Weather]
-    let date: String
+    let temp: Temp?
+    let weather: [Weather]?
+    let date: String?
     
     enum CodingKeys: String, CodingKey {
         
@@ -31,8 +41,8 @@ struct WeatherInfo: Decodable {
 
 struct Temp: Decodable {
     
-    let tempMin: Double
-    let tempMax: Double
+    let tempMin: Double?
+    let tempMax: Double?
     
     enum CodingKeys: String, CodingKey {
         
@@ -45,7 +55,7 @@ struct Temp: Decodable {
 struct Weather: Decodable {
     
     let id: Int
-    let main: String
-    let icon: String
+    let main: String?
+    let icon: String?
     
 }
