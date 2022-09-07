@@ -10,9 +10,15 @@
 		9E64E14B3FD72BD23E0C55E2 /* Pods_WeatherList_WeatherListUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A673504129FBF451ABD3191 /* Pods_WeatherList_WeatherListUITests.framework */; };
 		ADAD01909768FA83EBF137D1 /* Pods_WeatherListTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B89FF09A1BDFEF379850E9F0 /* Pods_WeatherListTests.framework */; };
 		E13DF78028C7266A00BFD2DA /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13DF77F28C7266A00BFD2DA /* WeatherResponse.swift */; };
+		E13DF78528C7333300BFD2DA /* Bundle + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13DF78428C7333300BFD2DA /* Bundle + extension.swift */; };
+		E13DF78728C733FE00BFD2DA /* WeatherInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = E13DF78628C733FE00BFD2DA /* WeatherInfo.plist */; };
+		E13DF79828C787ED00BFD2DA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E13DF79728C787ED00BFD2DA /* Alamofire */; };
+		E13DF79A28C7884500BFD2DA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13DF79928C7884500BFD2DA /* MainViewController.swift */; };
+		E13DF79C28C7887900BFD2DA /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13DF79B28C7887900BFD2DA /* WeatherService.swift */; };
+		E13DF79E28C7918300BFD2DA /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13DF79D28C7918300BFD2DA /* WeatherViewModel.swift */; };
+		E1B2E99928C8AE91003EEB02 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B2E99828C8AE91003EEB02 /* MainViewModel.swift */; };
 		E1F9DD4328C5EAB400B5A261 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9DD4228C5EAB400B5A261 /* AppDelegate.swift */; };
 		E1F9DD4528C5EAB400B5A261 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9DD4428C5EAB400B5A261 /* SceneDelegate.swift */; };
-		E1F9DD4728C5EAB400B5A261 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9DD4628C5EAB400B5A261 /* ViewController.swift */; };
 		E1F9DD4C28C5EAB600B5A261 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1F9DD4B28C5EAB600B5A261 /* Assets.xcassets */; };
 		E1F9DD4F28C5EAB600B5A261 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1F9DD4D28C5EAB600B5A261 /* LaunchScreen.storyboard */; };
 		E1F9DD5A28C5EAB600B5A261 /* WeatherListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F9DD5928C5EAB600B5A261 /* WeatherListTests.swift */; };
@@ -47,10 +53,15 @@
 		B89FF09A1BDFEF379850E9F0 /* Pods_WeatherListTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherListTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C548507015E4B15B4FDA6A94 /* Pods-WeatherListTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherListTests.release.xcconfig"; path = "Target Support Files/Pods-WeatherListTests/Pods-WeatherListTests.release.xcconfig"; sourceTree = "<group>"; };
 		E13DF77F28C7266A00BFD2DA /* WeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
+		E13DF78428C7333300BFD2DA /* Bundle + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle + extension.swift"; sourceTree = "<group>"; };
+		E13DF78628C733FE00BFD2DA /* WeatherInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WeatherInfo.plist; sourceTree = "<group>"; };
+		E13DF79928C7884500BFD2DA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		E13DF79B28C7887900BFD2DA /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		E13DF79D28C7918300BFD2DA /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		E1B2E99828C8AE91003EEB02 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E1F9DD3F28C5EAB400B5A261 /* WeatherList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1F9DD4228C5EAB400B5A261 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1F9DD4428C5EAB400B5A261 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E1F9DD4628C5EAB400B5A261 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E1F9DD4B28C5EAB600B5A261 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1F9DD4E28C5EAB600B5A261 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E1F9DD5028C5EAB600B5A261 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13DF79828C787ED00BFD2DA /* Alamofire in Frameworks */,
 				E1F9DD7728C5F13F00B5A261 /* SnapKit in Frameworks */,
 				E466F6474EC61BC2980DB857 /* Pods_WeatherList.framework in Frameworks */,
 			);
@@ -115,6 +127,8 @@
 		E13DF77D28C7191100BFD2DA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E13DF79D28C7918300BFD2DA /* WeatherViewModel.swift */,
+				E1B2E99828C8AE91003EEB02 /* MainViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -125,6 +139,22 @@
 				E13DF77F28C7266A00BFD2DA /* WeatherResponse.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		E13DF78328C7332500BFD2DA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E13DF78428C7333300BFD2DA /* Bundle + extension.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		E13DF78828C7453E00BFD2DA /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E13DF79B28C7887900BFD2DA /* WeatherService.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		E1F9DD3628C5EAB300B5A261 = {
@@ -151,11 +181,13 @@
 		E1F9DD4128C5EAB400B5A261 /* WeatherList */ = {
 			isa = PBXGroup;
 			children = (
+				E13DF78828C7453E00BFD2DA /* Network */,
+				E1F9DD7228C5F02C00B5A261 /* Application */,
 				E1F9DD7428C5F0A300B5A261 /* Controllers */,
 				E13DF77D28C7191100BFD2DA /* ViewModels */,
 				E13DF77E28C7192800BFD2DA /* Models */,
-				E1F9DD7228C5F02C00B5A261 /* Application */,
 				E1F9DD7328C5F03E00B5A261 /* Resource */,
+				E13DF78328C7332500BFD2DA /* Utils */,
 			);
 			path = WeatherList;
 			sourceTree = "<group>";
@@ -183,6 +215,7 @@
 				E1F9DD4B28C5EAB600B5A261 /* Assets.xcassets */,
 				E1F9DD4D28C5EAB600B5A261 /* LaunchScreen.storyboard */,
 				E1F9DD5028C5EAB600B5A261 /* Info.plist */,
+				E13DF78628C733FE00BFD2DA /* WeatherInfo.plist */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -190,7 +223,7 @@
 		E1F9DD7428C5F0A300B5A261 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E1F9DD4628C5EAB400B5A261 /* ViewController.swift */,
+				E13DF79928C7884500BFD2DA /* MainViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -215,6 +248,7 @@
 			name = WeatherList;
 			packageProductDependencies = (
 				E1F9DD7628C5F13F00B5A261 /* SnapKit */,
+				E13DF79728C787ED00BFD2DA /* Alamofire */,
 			);
 			productName = WeatherList;
 			productReference = E1F9DD3F28C5EAB400B5A261 /* WeatherList.app */;
@@ -293,6 +327,7 @@
 			mainGroup = E1F9DD3628C5EAB300B5A261;
 			packageReferences = (
 				E1F9DD7528C5F13F00B5A261 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E13DF79628C787ED00BFD2DA /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = E1F9DD4028C5EAB400B5A261 /* Products */;
 			projectDirPath = "";
@@ -312,6 +347,7 @@
 			files = (
 				E1F9DD4F28C5EAB600B5A261 /* LaunchScreen.storyboard in Resources */,
 				E1F9DD4C28C5EAB600B5A261 /* Assets.xcassets in Resources */,
+				E13DF78728C733FE00BFD2DA /* WeatherInfo.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,10 +475,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1F9DD4728C5EAB400B5A261 /* ViewController.swift in Sources */,
 				E1F9DD4328C5EAB400B5A261 /* AppDelegate.swift in Sources */,
 				E1F9DD4528C5EAB400B5A261 /* SceneDelegate.swift in Sources */,
+				E13DF79A28C7884500BFD2DA /* MainViewController.swift in Sources */,
+				E13DF79E28C7918300BFD2DA /* WeatherViewModel.swift in Sources */,
+				E13DF78528C7333300BFD2DA /* Bundle + extension.swift in Sources */,
+				E13DF79C28C7887900BFD2DA /* WeatherService.swift in Sources */,
 				E13DF78028C7266A00BFD2DA /* WeatherResponse.swift in Sources */,
+				E1B2E99928C8AE91003EEB02 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +822,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E13DF79628C787ED00BFD2DA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		E1F9DD7528C5F13F00B5A261 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -793,6 +841,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E13DF79728C787ED00BFD2DA /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E13DF79628C787ED00BFD2DA /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		E1F9DD7628C5F13F00B5A261 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E1F9DD7528C5F13F00B5A261 /* XCRemoteSwiftPackageReference "SnapKit" */;
