@@ -34,12 +34,12 @@ enum NetworkError: LocalizedError {
 }
 
 protocol WeatherServiceProtocol {
-    func fetchWeather(with: String) -> Observable<[WeatherInfo]>
+    func fetchWeather(with: String) -> Observable<WeatherResponse>
 }
 
 final class WeatherService: WeatherServiceProtocol {
     
-    func fetchWeather(with city: String) -> Observable<[WeatherInfo]> {
+    func fetchWeather(with city: String) -> Observable<WeatherResponse> {
         return Observable.create { observer -> Disposable in
             self.fetchWeather(with: city) { result in
                 switch result {
@@ -57,7 +57,7 @@ final class WeatherService: WeatherServiceProtocol {
     
     private func fetchWeather(
         with city: String,
-        completion: @escaping (Result<[WeatherInfo], NetworkError>) -> Void
+        completion: @escaping (Result<WeatherResponse, NetworkError>) -> Void
     ) {
         let urlString = "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(Bundle.main.apiKey)&units=metric"
         print(urlString)
@@ -80,7 +80,7 @@ final class WeatherService: WeatherServiceProtocol {
                 return completion(.failure(.invalidResponse))
             }
             
-            if let weathers = response.value?.list {
+            if let weathers = response.value {
                 completion(.success(weathers))
                 return
             }
