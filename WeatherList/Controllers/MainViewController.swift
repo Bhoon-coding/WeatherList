@@ -58,7 +58,7 @@ final class MainViewController: UIViewController {
     func configureUI() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints {
-            $0.leading.top.trailing.bottom.equalToSuperview()
+            $0.leading.top.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
