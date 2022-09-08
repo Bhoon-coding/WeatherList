@@ -31,12 +31,12 @@ final class WeatherViewModel {
         return weatherInfo.weather?[0].main
     }
 
-    var maxTemp: Double? {
-        return weatherInfo.temp?.tempMax
+    var maxTemp: Double {
+        return weatherInfo.temp.tempMax
     }
 
-    var minTemp: Double? {
-        return weatherInfo.temp?.tempMin
+    var minTemp: Double {
+        return weatherInfo.temp.tempMin
     }
     
     init(

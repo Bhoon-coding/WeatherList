@@ -9,8 +9,19 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import SnapKit
 
 final class MainViewController: UIViewController {
+    
+    // MARK: - UIProperties
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .systemBackground
+        return tableView
+    }()
+    
+    // MARK: - Properties
     
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
@@ -34,10 +45,30 @@ final class MainViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeCycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
+        configureTableView()
         fetchWeathers()
         subscribe()
+    }
+    
+    func configureUI() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints {
+            $0.leading.top.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    func configureTableView() {
+        tableView.rowHeight = 120
+        tableView.register(
+            WeatherCell.self,
+            forCellReuseIdentifier: String(describing: WeatherCell.self)
+        )
+        tableView.dataSource = self
     }
     
     func fetchWeathers() {
@@ -49,8 +80,31 @@ final class MainViewController: UIViewController {
     
     func subscribe() {
         self.weatherResponseObserver.subscribe(onNext: { weatherResponse in
-            dump(weatherResponse)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }).disposed(by: disposeBag)
     }
 
+}
+
+extension MainViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return weatherResponse.value.list?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WeatherCell.self), for: indexPath) as? WeatherCell else { return UITableViewCell() }
+        
+        let weatherResponse = self.weatherResponse.value
+        cell.weatherResponse.onNext(weatherResponse)
+        
+        
+        return cell
+    }
+    
+    
+    
+    
 }
