@@ -6,7 +6,10 @@
 //
 
 import UIKit
+
+import Kingfisher
 import RxSwift
+
 
 class WeatherCell: UITableViewCell {
     
@@ -56,6 +59,7 @@ class WeatherCell: UITableViewCell {
     // MARK: - Properties
 
     var weatherResponse = PublishSubject<WeatherResponse>()
+    var weatherInfo = PublishSubject<WeatherInfo>()
     let disposeBag = DisposeBag()
     
     // MARK: - LifeCycles
@@ -74,12 +78,12 @@ class WeatherCell: UITableViewCell {
         self.weatherResponse.subscribe(onNext: { weatherResponse in
             self.dateLabel.text = weatherResponse.list?[0].date
             // imageView
-            self.weatherImageView.image = UIImage(systemName: "square.and.arrow.up")
+            let url = URL(string: "http://openweathermap.org/img/wn/10d@2x.png")
+            self.weatherImageView.kf.setImage(with: url)
             self.weatherLabel.text = weatherResponse.list?[0].weather?[0].main
             self.tempMaxLabel.text = String(describing: weatherResponse.list?[0].temp.tempMax)
             self.tempMinLabel.text = String(describing: weatherResponse.list?[0].temp.tempMin)
-            
-            
+
         }).disposed(by: disposeBag)
     }
     

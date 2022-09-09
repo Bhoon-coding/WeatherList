@@ -34,7 +34,9 @@ enum NetworkError: LocalizedError {
 }
 
 protocol WeatherServiceProtocol {
+    
     func fetchWeather(with: String) -> Observable<WeatherResponse>
+    
 }
 
 final class WeatherService: WeatherServiceProtocol {

@@ -26,12 +26,7 @@ final class MainViewController: UIViewController {
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
     
-    private let weatherResponse = BehaviorRelay<WeatherResponse>(
-        value: WeatherResponse(statusCode: nil,
-                               count: nil,
-                               list: nil,
-                               city: nil)
-    )
+    private let weatherResponse = BehaviorRelay<WeatherResponse>(value: WeatherResponse(statusCode: nil, count: nil, list: nil, city: nil))
     var weatherResponseObserver: Observable<WeatherResponse> {
         return weatherResponse.asObservable()
     }
