@@ -27,7 +27,6 @@ class WeatherCell: UITableViewCell {
         imageView.layer.cornerRadius = 8
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .secondarySystemBackground
         return imageView
     }()
     
@@ -58,8 +57,7 @@ class WeatherCell: UITableViewCell {
     
     // MARK: - Properties
 
-    var weatherResponse = PublishSubject<WeatherResponse>()
-    var weatherInfo = PublishSubject<WeatherInfo>()
+    var weatherResponse = PublishSubject<WeatherInfo?>()
     let disposeBag = DisposeBag()
     
     // MARK: - LifeCycles
@@ -75,14 +73,22 @@ class WeatherCell: UITableViewCell {
     }
     
     func subscribe() {
-        self.weatherResponse.subscribe(onNext: { weatherResponse in
-            self.dateLabel.text = weatherResponse.list?[0].date
-            // imageView
-            let url = URL(string: "http://openweathermap.org/img/wn/10d@2x.png")
+        self.weatherResponse.subscribe(onNext: { weatherInfo in
+            guard let weatherInfo = weatherInfo,
+                  let icon = weatherInfo.weather?[0].icon,
+                  let url = URL(string: "http://openweathermap.org/img/wn/\(icon).png") else {
+                self.dateLabel.text = "날짜없음"
+                self.weatherImageView.backgroundColor = .secondarySystemBackground
+                self.weatherLabel.text = "날씨없음"
+                self.tempMaxLabel.text = "온도없음"
+                self.tempMinLabel.text = "온도없음"
+                return
+            }
+            self.dateLabel.text = weatherInfo.date
             self.weatherImageView.kf.setImage(with: url)
-            self.weatherLabel.text = weatherResponse.list?[0].weather?[0].main
-            self.tempMaxLabel.text = String(describing: weatherResponse.list?[0].temp.tempMax)
-            self.tempMinLabel.text = String(describing: weatherResponse.list?[0].temp.tempMin)
+            self.weatherLabel.text = weatherInfo.weather?[0].main
+            self.tempMaxLabel.text = "Max: \(Int(weatherInfo.temp.tempMax))℃"
+            self.tempMinLabel.text = "Min: \(Int(weatherInfo.temp.tempMin))℃"
 
         }).disposed(by: disposeBag)
     }
@@ -115,6 +121,7 @@ class WeatherCell: UITableViewCell {
         tempStackView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(8)
             $0.bottom.equalToSuperview().inset(24)
+            $0.leading.equalTo(contentView.snp.centerX).inset(16)
         }
     }
 

@@ -17,7 +17,7 @@ final class MainViewModel {
         self.weatherService = weatherService
     }
     
-    func fetchWeathers() -> Observable<WeatherResponse> {
+    func fetchWeathers() -> Observable<[WeatherResponse]> {
         weatherService.fetchWeather(with: "seoul")
     }
     

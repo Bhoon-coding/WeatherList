@@ -26,8 +26,8 @@ final class MainViewController: UIViewController {
     let viewModel: MainViewModel
     let disposeBag = DisposeBag()
     
-    private let weatherResponse = BehaviorRelay<WeatherResponse>(value: WeatherResponse(statusCode: nil, count: nil, list: nil, city: nil))
-    var weatherResponseObserver: Observable<WeatherResponse> {
+    private let weatherResponse = BehaviorRelay<[WeatherResponse]>(value: [])
+    var weatherResponseObserver: Observable<[WeatherResponse]> {
         return weatherResponse.asObservable()
     }
     
@@ -84,16 +84,21 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weatherResponse.value.list?.count ?? 0
+        if weatherResponse.value.isEmpty {
+            return 0
+        } else {
+            return weatherResponse.value[section].list?.count ?? 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WeatherCell.self), for: indexPath) as? WeatherCell else { return UITableViewCell() }
         
-        let weatherResponse = self.weatherResponse.value
-        cell.weatherResponse.onNext(weatherResponse)
+        let weatherResponse = self.weatherResponse.value[indexPath.section]
+        let weatherInfo = weatherResponse.list?[indexPath.row]
+        cell.weatherResponse.onNext(weatherInfo)
         
         
         return cell
