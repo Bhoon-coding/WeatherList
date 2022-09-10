@@ -34,57 +34,34 @@ enum NetworkError: LocalizedError {
 }
 
 protocol WeatherServiceProtocol {
+    
     func fetchWeather(with: String) -> Observable<WeatherResponse>
+    
 }
 
 final class WeatherService: WeatherServiceProtocol {
     
     func fetchWeather(with city: String) -> Observable<WeatherResponse> {
         return Observable.create { observer -> Disposable in
-            self.fetchWeather(with: city) { result in
-                switch result {
-                case .failure(let error):
-                    observer.onError(error)
-                case .success(let weathers):
-                    dump(weathers)
-                    observer.onNext(weathers)
+            let urlString = "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(Bundle.main.apiKey)&units=metric"
+
+            if let url = URL(string: urlString) {
+                AF.request(
+                    url,
+                    method: .get,
+                    encoding: JSONEncoding.default
+                ).responseDecodable(of: WeatherResponse.self) { response in
+                    if response.error != nil {
+                        observer.onError(response.error ?? NetworkError.invalidResponse)
+                    }
+                    
+                    if let weathersResponse = response.value {
+                        observer.onNext(weathersResponse)
+                    }
+                    observer.onCompleted()
                 }
-                observer.onCompleted()
             }
             return Disposables.create()
-        }
-    }
-    
-    private func fetchWeather(
-        with city: String,
-        completion: @escaping (Result<WeatherResponse, NetworkError>) -> Void
-    ) {
-        let urlString = "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(Bundle.main.apiKey)&units=metric"
-        print(urlString)
-        
-        guard let url = URL(string: urlString) else {
-            completion(.failure(.invalidURL))
-            return
-        }
-        
-        AF.request(
-            url,
-            method: .get,
-            parameters: nil,
-            encoding: JSONEncoding.default,
-            headers: nil,
-            interceptor: nil,
-            requestModifier: nil
-        ).responseDecodable(of: WeatherResponse.self) { response in
-            if response.error != nil {
-                return completion(.failure(.invalidResponse))
-            }
-            
-            if let weathers = response.value {
-                completion(.success(weathers))
-                return
-            }
-            
         }
         
     }

@@ -27,10 +27,9 @@ struct WeatherResponse: Decodable {
 
 struct WeatherInfo: Decodable {
     
-    let temp: Temp?
+    let temp: Temp
     let weather: [Weather]?
     let date: String?
-    
     
     enum CodingKeys: String, CodingKey {
         
@@ -50,8 +49,8 @@ struct City: Decodable {
 
 struct Temp: Decodable {
     
-    let tempMin: Double?
-    let tempMax: Double?
+    let tempMin: Double
+    let tempMax: Double
     
     enum CodingKeys: String, CodingKey {
         
