@@ -84,7 +84,7 @@ class WeatherCell: UITableViewCell {
                 self.tempMinLabel.text = "온도없음"
                 return
             }
-            self.dateLabel.text = weatherInfo.date
+            self.dateLabel.text = weatherInfo.date?.setDate()
             self.weatherImageView.kf.setImage(with: url)
             self.weatherLabel.text = weatherInfo.weather?[0].main
             self.tempMaxLabel.text = "Max: \(Int(weatherInfo.temp.tempMax))℃"
