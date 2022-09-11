@@ -15,7 +15,7 @@ class WeatherCell: UITableViewCell {
     
     // MARK: - UIProperties
     
-    private lazy var dateLabel: UILabel = {
+    lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
         label.textColor = .systemGray

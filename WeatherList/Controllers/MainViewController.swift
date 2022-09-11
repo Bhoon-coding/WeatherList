@@ -101,6 +101,14 @@ extension MainViewController: UITableViewDataSource {
         let weatherInfo = weatherResponse.list?[indexPath.row]
         cell.weatherResponse.onNext(weatherInfo)
         
+        switch indexPath.row {
+        case 0:
+            cell.dateLabel.text = "Today"
+        case 1:
+            cell.dateLabel.text = "Tomorrow"
+        default:
+            break
+        }
         
         return cell
     }
