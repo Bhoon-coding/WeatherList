@@ -56,8 +56,13 @@ final class WeatherService: WeatherServiceProtocol {
                         observer.onError(response.error ?? NetworkError.invalidResponse)
                     }
                     
-                    if let weathersResponse = response.value {
+                    if var weathersResponse = response.value {
+                        
+                        weathersResponse.list =  weathersResponse.list?
+                            .filter { $0.date.contains("09:00:00") }
+                        
                         results.append(weathersResponse)
+                        
                         observer.onNext(results)
                     }
                     observer.onCompleted()

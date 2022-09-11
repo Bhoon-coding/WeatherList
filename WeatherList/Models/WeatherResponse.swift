@@ -11,7 +11,7 @@ struct WeatherResponse: Decodable {
     
     let statusCode: String?
     let count: Int?
-    let list: [WeatherInfo]?
+    var list: [WeatherInfo]?
     let city: City?
     
     enum CodingKeys: String, CodingKey {
@@ -29,7 +29,7 @@ struct WeatherInfo: Decodable {
     
     let temp: Temp
     let weather: [Weather]?
-    let date: String?
+    let date: String
     
     enum CodingKeys: String, CodingKey {
         

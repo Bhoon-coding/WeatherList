@@ -74,7 +74,8 @@ final class MainViewController: UIViewController {
     }
     
     func subscribe() {
-        self.weatherResponseObserver.subscribe(onNext: { weatherResponse in
+        self.weatherResponseObserver
+            .subscribe(onNext: { weatherResponse in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
