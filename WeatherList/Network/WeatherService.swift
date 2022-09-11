@@ -35,14 +35,15 @@ enum NetworkError: LocalizedError {
 
 protocol WeatherServiceProtocol {
     
-    func fetchWeather(with: String) -> Observable<WeatherResponse>
+    func fetchWeather(with: String) -> Observable<[WeatherResponse]>
     
 }
 
 final class WeatherService: WeatherServiceProtocol {
     
-    func fetchWeather(with city: String) -> Observable<WeatherResponse> {
+    func fetchWeather(with city: String) -> Observable<[WeatherResponse]> {
         return Observable.create { observer -> Disposable in
+            var results: [WeatherResponse] = []
             let urlString = "https://api.openweathermap.org/data/2.5/forecast?q=\(city)&appid=\(Bundle.main.apiKey)&units=metric"
 
             if let url = URL(string: urlString) {
@@ -55,8 +56,14 @@ final class WeatherService: WeatherServiceProtocol {
                         observer.onError(response.error ?? NetworkError.invalidResponse)
                     }
                     
-                    if let weathersResponse = response.value {
-                        observer.onNext(weathersResponse)
+                    if var weathersResponse = response.value {
+                        
+                        weathersResponse.list =  weathersResponse.list?
+                            .filter { $0.date.contains("09:00:00") }
+                        
+                        results.append(weathersResponse)
+                        
+                        observer.onNext(results)
                     }
                     observer.onCompleted()
                 }
