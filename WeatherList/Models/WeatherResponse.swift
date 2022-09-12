@@ -6,6 +6,23 @@
 //
 
 import Foundation
+import RxDataSources
+
+struct SectionOfWeatherResponse {
+    var header: String
+    var items: [WeatherInfo]
+}
+
+extension SectionOfWeatherResponse: SectionModelType {
+    
+    typealias Item = WeatherInfo
+    
+    init(original: SectionOfWeatherResponse, items: [Item]) {
+        self = original
+        self.items = items
+    }
+    
+}
 
 struct WeatherResponse: Decodable {
     
