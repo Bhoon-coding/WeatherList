@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import RxDataSources
 import SnapKit
 
 final class MainViewController: UIViewController {
@@ -23,13 +24,29 @@ final class MainViewController: UIViewController {
     
     // MARK: - Properties
     
-    let viewModel: MainViewModel
-    let disposeBag = DisposeBag()
-    
-    private let weatherResponse = BehaviorRelay<[WeatherResponse]>(value: [])
-    var weatherResponseObserver: Observable<[WeatherResponse]> {
-        return weatherResponse.asObservable()
-    }
+    let weatherResponse = BehaviorRelay<[SectionOfWeatherResponse]>(value: [])
+    private let disposeBag = DisposeBag()
+    private let viewModel: MainViewModel
+    private var dataSource = RxTableViewSectionedReloadDataSource<SectionOfWeatherResponse>(
+        configureCell: { dataSource, tableView, indexPath, item in
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: String(describing: WeatherCell.self),
+            for: indexPath
+        ) as? WeatherCell else { return UITableViewCell() }
+        cell.weatherResponse.onNext(item)
+            let today = 0
+            let tomorrow = 1
+            
+            switch indexPath.row {
+            case today:
+                cell.dateLabel.text = "Today"
+            case tomorrow:
+                cell.dateLabel.text = "Tomorrow"
+            default:
+                break
+            }
+        return cell
+    })
     
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -47,73 +64,68 @@ final class MainViewController: UIViewController {
         configureUI()
         configureTableView()
         fetchWeathers()
-        subscribe()
     }
+
+}
+
+// MARK: - UI Extension
+
+extension MainViewController {
     
-    func configureUI() {
+    private func configureUI() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.leading.top.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView.rowHeight = 120
         tableView.register(
             WeatherCell.self,
             forCellReuseIdentifier: String(describing: WeatherCell.self)
         )
-        tableView.dataSource = self
     }
     
-    func fetchWeathers() {
-        self.viewModel.fetchWeathers()
-            .subscribe(onNext: { weatherRes in
-                self.weatherResponse.accept(weatherRes)
-        }).disposed(by: disposeBag)
-    }
-    
-    func subscribe() {
-        self.weatherResponseObserver
-            .subscribe(onNext: { weatherResponse in
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }).disposed(by: disposeBag)
-    }
-
 }
 
-extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if weatherResponse.value.isEmpty {
-            return 0
-        } else {
-            return weatherResponse.value[section].list?.count ?? 0
-        }
-        
+// MARK: - FetchWeather Extension
+
+extension MainViewController {
+    
+    private func fetchWeathers() {
+        viewModel.fetchWeathers()
+            .subscribe(onNext: { [weak self] weatherRes in
+                guard let self = self else { fatalError("Failed data fetch") }
+                
+                let sections = [
+                    SectionOfWeatherResponse(header: weatherRes[0].city!.name,
+                                             items: weatherRes[0].list!),
+                    SectionOfWeatherResponse(header: weatherRes[1].city!.name,
+                                             items: weatherRes[1].list!),
+                    SectionOfWeatherResponse(header: weatherRes[2].city!.name,
+                                             items: weatherRes[2].list!)
+                ]
+                
+                self.weatherResponse.accept(sections)
+                self.dataSource.titleForHeaderInSection = { dataSource, index in
+                    return dataSource.sectionModels[index].header
+                }
+                
+                self.bind()
+            }).disposed(by: disposeBag)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WeatherCell.self), for: indexPath) as? WeatherCell else { return UITableViewCell() }
-        
-        let weatherResponse = self.weatherResponse.value[indexPath.section]
-        let weatherInfo = weatherResponse.list?[indexPath.row]
-        cell.weatherResponse.onNext(weatherInfo)
-        
-        switch indexPath.row {
-        case 0:
-            cell.dateLabel.text = "Today"
-        case 1:
-            cell.dateLabel.text = "Tomorrow"
-        default:
-            break
-        }
-        
-        return cell
+}
+
+// MARK: - Binding Extension
+
+extension MainViewController {
+    
+    private func bind() {
+        weatherResponse
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
-    
-    
-    
     
 }

@@ -6,13 +6,30 @@
 //
 
 import Foundation
+import RxDataSources
+
+struct SectionOfWeatherResponse {
+    var header: String
+    var items: [WeatherInfo]
+}
+
+extension SectionOfWeatherResponse: SectionModelType {
+    
+    typealias Item = WeatherInfo
+    
+    init(original: SectionOfWeatherResponse, items: [Item]) {
+        self = original
+        self.items = items
+    }
+    
+}
 
 struct WeatherResponse: Decodable {
     
-    let statusCode: String?
-    let count: Int?
+    var statusCode: String?
+    var count: Int?
     var list: [WeatherInfo]?
-    let city: City?
+    var city: City?
     
     enum CodingKeys: String, CodingKey {
         
@@ -27,9 +44,9 @@ struct WeatherResponse: Decodable {
 
 struct WeatherInfo: Decodable {
     
-    let temp: Temp
-    let weather: [Weather]?
-    let date: String
+    var temp: Temp
+    var weather: [Weather]?
+    var date: String
     
     enum CodingKeys: String, CodingKey {
         
@@ -43,13 +60,13 @@ struct WeatherInfo: Decodable {
 
 struct City: Decodable {
     
-    let name: String
+    var name: String
     
 }
 
 struct Temp: Decodable {
     
-    let tempMin: Double
+    var tempMin: Double
     let tempMax: Double
     
     enum CodingKeys: String, CodingKey {
