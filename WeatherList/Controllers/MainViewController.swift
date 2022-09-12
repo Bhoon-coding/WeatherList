@@ -9,6 +9,7 @@ import UIKit
 
 import RxSwift
 import RxRelay
+import RxDataSources
 import SnapKit
 
 final class MainViewController: UIViewController {
@@ -23,11 +24,31 @@ final class MainViewController: UIViewController {
     
     // MARK: - Properties
     
-    let viewModel: MainViewModel
-    let disposeBag = DisposeBag()
+    private let viewModel: MainViewModel
+    private let disposeBag = DisposeBag()
+    private var dataSource = RxTableViewSectionedReloadDataSource<SectionOfWeatherResponse>(
+        configureCell: { dataSource, tableView, indexPath, item in
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: String(describing: WeatherCell.self),
+            for: indexPath
+        ) as? WeatherCell else { return UITableViewCell() }
+        cell.weatherResponse.onNext(item)
+            
+            switch indexPath.row {
+            case 0:
+                cell.dateLabel.text = "Today"
+            case 1:
+                cell.dateLabel.text = "Tomorrow"
+            default:
+                break
+            }
+        
+        return cell
+        
+    })
     
-    private let weatherResponse = BehaviorRelay<[WeatherResponse]>(value: [])
-    var weatherResponseObserver: Observable<[WeatherResponse]> {
+    private let weatherResponse = BehaviorRelay<[SectionOfWeatherResponse]>(value: [])
+    private var weatherResponseObserver: Observable<[SectionOfWeatherResponse]> {
         return weatherResponse.asObservable()
     }
     
@@ -47,7 +68,6 @@ final class MainViewController: UIViewController {
         configureUI()
         configureTableView()
         fetchWeathers()
-        subscribe()
     }
     
     func configureUI() {
@@ -63,57 +83,35 @@ final class MainViewController: UIViewController {
             WeatherCell.self,
             forCellReuseIdentifier: String(describing: WeatherCell.self)
         )
-        tableView.dataSource = self
     }
     
     func fetchWeathers() {
         self.viewModel.fetchWeathers()
             .subscribe(onNext: { weatherRes in
-                self.weatherResponse.accept(weatherRes)
+                guard let weatherInfo = weatherRes[0].list else {
+                    print("there is no weatherInfo")
+                    return }
+                let sections = [
+                    SectionOfWeatherResponse(header: "Seoul", items: weatherInfo),
+                    SectionOfWeatherResponse(header: "London", items: weatherInfo),
+                    SectionOfWeatherResponse(header: "Chicago", items: weatherInfo)
+                ]
+                self.weatherResponse.accept(sections)
+                
+                self.dataSource.titleForHeaderInSection = { dataSource, index in
+                    return dataSource.sectionModels[index].header
+                }
+                
+                self.bind()
         }).disposed(by: disposeBag)
+        
+        
     }
     
-    func subscribe() {
-        self.weatherResponseObserver
-            .subscribe(onNext: { weatherResponse in
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }).disposed(by: disposeBag)
+    func bind() {
+        weatherResponse
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
 
-}
-
-extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if weatherResponse.value.isEmpty {
-            return 0
-        } else {
-            return weatherResponse.value[section].list?.count ?? 0
-        }
-        
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WeatherCell.self), for: indexPath) as? WeatherCell else { return UITableViewCell() }
-        
-        let weatherResponse = self.weatherResponse.value[indexPath.section]
-        let weatherInfo = weatherResponse.list?[indexPath.row]
-        cell.weatherResponse.onNext(weatherInfo)
-        
-        switch indexPath.row {
-        case 0:
-            cell.dateLabel.text = "Today"
-        case 1:
-            cell.dateLabel.text = "Tomorrow"
-        default:
-            break
-        }
-        
-        return cell
-    }
-    
-    
-    
-    
 }

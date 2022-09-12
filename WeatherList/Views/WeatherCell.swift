@@ -10,7 +10,6 @@ import UIKit
 import Kingfisher
 import RxSwift
 
-
 class WeatherCell: UITableViewCell {
     
     // MARK: - UIProperties
