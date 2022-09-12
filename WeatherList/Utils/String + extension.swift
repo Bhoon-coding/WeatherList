@@ -15,6 +15,7 @@ extension String {
         
         let stringFormatter = DateFormatter()
         stringFormatter.dateFormat = "E d MMM"
+        stringFormatter.locale = Locale(identifier: "us")
         
         if let check = dateFormatter.date(from: self) {
             return stringFormatter.string(from: check)
